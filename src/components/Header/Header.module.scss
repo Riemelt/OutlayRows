@@ -4,29 +4,30 @@
 .header {
   @extend %container;
 
-  height: 3.1429rem;
   background-color: variables.$darker;
-  border-bottom: 1px solid variables.$dark;
+  border-bottom: 0.0714rem solid variables.$dark;
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 1.9286rem;
+  flex-wrap: wrap;
+  min-height: 3.1429rem;
 }
 
 .buttons {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1.4286rem;
 }
 
 .buttonIcon {
   @extend %reset;
 
-  height: 24px;
+  height: 1.7143rem;
   cursor: pointer;
 }
 
 .icon {
-  width: 24px;
+  width: 1.7143rem;
   height: auto;
   color: variables.$light;
 
@@ -40,7 +41,8 @@
 
   list-style-type: none;
   display: flex;
-  gap: 25px;
+  gap: 1.4286rem;
+  flex-wrap: wrap;
 }
 
 .navItemButton {
@@ -48,10 +50,11 @@
 
   @include mixins.default-font();
 
-  height: 42px;
-  min-width: 73px;
+  padding: 0.9286rem 0.2857rem;
   cursor: pointer;
   color: variables.$light;
+  display: flex;
+  justify-content: center;
 
   &:hover {
     color: white;
@@ -59,6 +62,15 @@
 }
 
 .navItemButton_active {
+  position: relative;
   color: white;
-  border-bottom: 2px solid white;
+
+  &::before {
+    content: '';
+    position: absolute;
+    background-color: white;
+    height: 0.1429rem;
+    width: 100%;
+    bottom: 0;
+  }
 }

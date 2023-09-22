@@ -1,0 +1,16 @@
+@use '../styles/variables.scss';
+
+.root {
+  display: flex;
+  flex: 1;
+  gap: 1px;
+  background: variables.$dark;
+}
+
+.sidebar {
+  flex: 0 0 16.7143rem;
+}
+
+.main {
+  flex: 1;
+}

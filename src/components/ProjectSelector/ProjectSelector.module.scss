@@ -1,0 +1,76 @@
+@use '../../styles/variables.scss';
+@use '../../styles/mixins.scss';
+
+.projectSelector {
+  background: variables.$darker;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5714rem 0.5rem 0.5714rem 1.4286rem;
+  border-bottom: 0.0714rem solid variables.$dark;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+}
+
+.name,
+.description {
+  @include mixins.default-font();
+
+  color: variables.$light;
+}
+
+.description {
+  font-size: 0.7143rem;
+  line-height: 0.7143rem;
+}
+
+.dropdownButton {
+  @extend %reset;
+
+  height: 1.7143rem;
+  cursor: pointer;
+}
+
+.dropdownIcon {
+  color: white;
+  width: 1.7143rem;
+  height: auto;
+}
+
+.projectList {
+  @extend %reset;
+
+  list-style-type: none;
+}
+
+.projectItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.3571rem 0 0.3571rem 1.4286rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: variables.$dark;
+  }
+}
+
+.projectItem_active {
+  background-color: variables.$light;
+
+  &:hover {
+    background-color: variables.$light;
+  }
+}
+
+.projectIcon {
+  width: 1.5714rem;
+  height: auto;
+}
