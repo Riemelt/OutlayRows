@@ -7,9 +7,7 @@ import '../styles';
 export const App: FC = () => {
   return (
     <Providers>
-      <Layout>
-        <div style={{ background: 'green' }}>layout</div>
-      </Layout>
+      <Layout>layout</Layout>
     </Providers>
   );
 };
