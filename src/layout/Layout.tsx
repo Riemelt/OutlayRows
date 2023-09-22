@@ -1,5 +1,6 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
+import { Header } from '../components';
 import styles from './Layout.module.scss';
 
 type Props = {
@@ -8,7 +9,9 @@ type Props = {
 
 export const Layout: FC<Props> = ({ children }) => (
   <div className={styles.layout}>
-    <header className={styles.header}>header</header>
+    <header className={styles.header}>
+      <Header />
+    </header>
     <div className={styles.main}>{children}</div>
   </div>
 );

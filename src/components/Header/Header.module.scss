@@ -1,0 +1,64 @@
+@use '../../styles/variables.scss';
+@use '../../styles/mixins.scss';
+
+.header {
+  @extend %container;
+
+  height: 3.1429rem;
+  background-color: variables.$darker;
+  border-bottom: 1px solid variables.$dark;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.buttonIcon {
+  @extend %reset;
+
+  height: 24px;
+  cursor: pointer;
+}
+
+.icon {
+  width: 24px;
+  height: auto;
+  color: variables.$light;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.navPanel {
+  @extend %reset;
+
+  list-style-type: none;
+  display: flex;
+  gap: 25px;
+}
+
+.navItemButton {
+  @extend %reset;
+
+  @include mixins.default-font();
+
+  height: 42px;
+  min-width: 73px;
+  cursor: pointer;
+  color: variables.$light;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.navItemButton_active {
+  color: white;
+  border-bottom: 2px solid white;
+}
