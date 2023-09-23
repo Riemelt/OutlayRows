@@ -4,7 +4,7 @@ import cn from 'classnames';
 import AppsIcon from '@mui/icons-material/Apps';
 import ReplyIcon from '@mui/icons-material/Reply';
 
-import { navigationList } from '.';
+import { navigationList } from './Header.constants';
 import styles from './Header.module.scss';
 
 export const Header: FC = () => (

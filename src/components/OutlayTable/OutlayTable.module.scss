@@ -1,0 +1,40 @@
+@use '../../styles/variables.scss';
+@use '../../styles/mixins.scss';
+
+.container {
+  align-self: stretch;
+
+  &::-webkit-scrollbar {
+    height: 15px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: variables.$dark;
+
+    &:hover {
+      background-color: variables.$light;
+    }
+  }
+}
+
+.outlayEntry,
+.title,
+.level {
+  color: variables.$light;
+  border-bottom: 0;
+  text-align: left;
+  white-space: nowrap;
+  padding: 12px;
+}
+
+.outlayEntry {
+  min-width: 200px;
+}
+
+.title {
+  width: 100%;
+}

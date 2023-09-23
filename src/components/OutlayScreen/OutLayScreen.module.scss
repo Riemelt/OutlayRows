@@ -1,0 +1,41 @@
+@use '../../styles/variables.scss';
+@use '../../styles/mixins.scss';
+
+.screen {
+  height: 100%;
+  background-color: variables.$darkest;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: variables.$darker;
+  min-height: 3.1429rem;
+  border-bottom: 0.0714rem solid variables.$dark;
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  @extend %reset;
+
+  @include mixins.default-font();
+
+  font-size: 1.2857rem;
+  height: 100%;
+  padding: 0.4286rem 1.0714rem;
+  display: flex;
+  align-items: center;
+}
+
+.line {
+  background-color: variables.$dark;
+  width: 0.0714rem;
+  height: auto;
+  align-self: stretch;
+}
+
+.table {
+  flex-grow: 1;
+  display: flex;
+}
