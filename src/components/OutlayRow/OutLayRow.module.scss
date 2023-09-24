@@ -1,0 +1,148 @@
+@use '../../styles/mixins.scss';
+@use '../../styles/variables.scss';
+
+.outlayEntry,
+.title,
+.level {
+  @include mixins.default-font();
+
+  text-align: left;
+  white-space: nowrap;
+  padding: 0.7143rem 0.8571rem;
+  height: 4.2857rem;
+  border-color: variables.$dark;
+}
+
+.level {
+  padding: 0 0.8571rem 0 0.5714rem;
+}
+
+.outlayEntry {
+  min-width: 14.2857rem;
+}
+
+.row {
+  &:last-child {
+    .outlayEntry,
+    .title,
+    .level {
+      border-bottom: 0;
+    }
+  }
+}
+
+.levelWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.scaffolds {
+  display: flex;
+}
+
+.line {
+  width: 1.4286rem;
+  height: 4.2857rem;
+  position: relative;
+  z-index: 1;
+}
+
+.line_topHalfVertical::before,
+.line_fullVertical::before,
+.line_horizontalRight::after {
+  content: '';
+  z-index: 0;
+  position: absolute;
+  background-color: variables.$lighter;
+  right: 0;
+}
+
+.line_topHalfVertical::before,
+.line_fullVertical::before {
+  transform: translate(-0.3rem, -0.0714rem);
+  width: 0.0714rem;
+}
+
+.line_topHalfVertical {
+  &::before {
+    height: 2.2857rem;
+  }
+}
+
+.line_fullVertical {
+  &::before {
+    height: 4.4286rem;
+  }
+}
+
+.line_horizontalRight {
+  &::after {
+    width: 0.8786rem;
+    height: 0.0714rem;
+    top: 50%;
+    transform: translate(0.5071rem, 0);
+  }
+}
+
+.iconCreateButton,
+.iconDeleteButton {
+  @extend %reset;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7143rem;
+  height: 1.7143rem;
+  cursor: pointer;
+}
+
+.iconDeleteButton {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0);
+  padding-left: 0.0714rem;
+  transition:
+    opacity 200ms,
+    transform 200ms;
+}
+
+.createIcon {
+  color: variables.$primary;
+}
+
+.controlPanel {
+  display: flex;
+  border-radius: 0.4286rem;
+  padding: 0.1429rem 0.2143rem;
+  transition: background-color 200ms;
+  height: 2rem;
+}
+
+.controlPanel_open {
+  background-color: variables.$dark;
+
+  .iconDeleteButton {
+    transform: scale(1);
+    transition:
+      opacity 200ms,
+      transform 200ms;
+    opacity: 1;
+    visibility: initial;
+  }
+}
+
+.controlPanel_withBottomLine {
+  position: relative;
+  z-index: 0;
+
+  &::before {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    background-color: variables.$lighter;
+    width: 0.0714rem;
+    height: 1.7857rem;
+    bottom: 0;
+    transform: translate(0.8571rem, 75%);
+  }
+}

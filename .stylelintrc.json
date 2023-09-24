@@ -6,7 +6,7 @@
     "declaration-no-important": true,
     "media-query-no-invalid": null,
     "selector-class-pattern": [
-      "^([a-z][A-Za-z0-9]*)?(_[a-z0-9-]+)?$",
+      "^([a-z][A-Za-z0-9]*)?(_[a-z][a-z0-9A-Z]+)?$",
       {
         "message": "Selector should be written in camelCase with possible modifier"
       }

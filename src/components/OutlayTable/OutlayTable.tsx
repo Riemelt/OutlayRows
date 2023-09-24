@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 
 import {
   Table,
@@ -9,45 +9,101 @@ import {
   TableRow,
 } from '@mui/material';
 
-import { headers } from './OutlayTable.constants';
+import {
+  OutLayEntity,
+  OutLayNode,
+  OutLayTree,
+  outlayHeaders,
+  outlayTree,
+} from './OutlayTable.constants';
 import styles from './OutlayTable.module.scss';
+import { OutLayRow } from '..';
 
-export const OutlayTable: FC = () => (
-  <TableContainer className={styles.container}>
-    <Table className={styles.table}>
-      <TableHead>
-        <TableRow className={styles.rows}>
-          <TableCell className={styles.level}>{headers.level}</TableCell>
-          <TableCell className={styles.title}>{headers.title}</TableCell>
-          {headers.outlay.map((item) => (
-            <TableCell
-              key={item.id}
-              className={styles.outlayEntry}
-              align="right"
-            >
-              {item.title}
+const convertTree = (tree: OutLayTree) => {
+  const stack: Array<OutLayEntity & { child: OutLayNode[] }> = tree.map(
+    (node) => ({
+      ...node,
+      parentId: null,
+      lowerSiblingCounts: '',
+      hasChildren: node.child.length > 0,
+    }),
+  );
+
+  const result: OutLayEntity[] = [];
+
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node === undefined) break;
+    if (node.child.length > 0) {
+      stack.push({
+        ...node,
+        child: [],
+      });
+
+      const children = node.child.map((childNode, index) => ({
+        ...childNode,
+        parentId: node.id,
+        lowerSiblingCounts: `${node.lowerSiblingCounts},${
+          node.child.length - index - 1
+        }`,
+        hasChildren: childNode.child.length > 0,
+      }));
+
+      stack.push(...children);
+    } else {
+      const { child: _, ...rest } = node;
+      result.push(rest);
+    }
+  }
+
+  return result.reverse();
+};
+
+const tree = convertTree(outlayTree);
+
+export const OutlayTable: FC = () => {
+  const ok = 5;
+
+  return (
+    <TableContainer className={styles.container}>
+      <Table className={styles.table}>
+        <TableHead>
+          <TableRow className={styles.rows}>
+            <TableCell className={styles.level}>
+              {outlayHeaders.level}
             </TableCell>
+            <TableCell className={styles.title}>
+              {outlayHeaders.title}
+            </TableCell>
+            {outlayHeaders.outlay.map((item) => (
+              <TableCell
+                key={item.id}
+                className={styles.outlayEntry}
+                align="right"
+              >
+                {item.title}
+              </TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tree.map((node) => (
+            <Fragment key={node.id}>
+              <OutLayRow
+                id={node.id}
+                rowName={node.rowName}
+                salary={node.salary}
+                equipmentCosts={node.equipmentCosts}
+                estimatedProfit={node.estimatedProfit}
+                overheads={node.overheads}
+                hasChildren={node.hasChildren}
+                parentId={node.parentId}
+                lowerSiblingCounts={node.lowerSiblingCounts}
+              />
+            </Fragment>
           ))}
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        <TableRow className={styles.rows}>
-          <TableCell className={styles.level}>test</TableCell>
-          <TableCell className={styles.title}>test</TableCell>
-          <TableCell className={styles.outlayEntry} align="right">
-            test
-          </TableCell>
-          <TableCell className={styles.outlayEntry} align="right">
-            test
-          </TableCell>
-          <TableCell className={styles.outlayEntry} align="right">
-            test
-          </TableCell>
-          <TableCell className={styles.outlayEntry} align="right">
-            test
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
-  </TableContainer>
-);
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};

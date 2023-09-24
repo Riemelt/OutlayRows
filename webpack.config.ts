@@ -1,7 +1,9 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
-const autoprefixer = require('autoprefixer');
+import HtmlWebpackPlugin = require('html-webpack-plugin');
+import MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import path = require('path');
+import autoprefixer = require('autoprefixer');
+import { Configuration } from 'webpack';
+import 'webpack-dev-server';
 
 const srcPath = path.resolve(__dirname, './src');
 const output = path.resolve(__dirname, './dist');
@@ -18,7 +20,7 @@ const cssLoader =
 
 console.log(`${mode} mode`);
 
-module.exports = {
+const config: Configuration = {
   context: srcPath,
   mode,
   plugins: [
@@ -46,6 +48,14 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        exclude: /fonts/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[name][hash][ext][query]',
+        },
+      },
       {
         test: /\.html$/i,
         loader: 'html-loader',
@@ -114,3 +124,5 @@ module.exports = {
     },
   },
 };
+
+export default config;
