@@ -1,0 +1,81 @@
+@use '../../styles/mixins.scss';
+@use '../../styles/variables.scss';
+
+.iconCreateButton,
+.iconDeleteButton {
+  @extend %reset;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7143rem;
+  height: 1.7143rem;
+  cursor: pointer;
+}
+
+.iconDeleteButton {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0);
+  padding-left: 0.0714rem;
+  transition:
+    opacity 200ms,
+    transform 200ms;
+  bottom: 50%;
+  translate: 100% 50%;
+}
+
+.createIcon {
+  color: variables.$primary;
+}
+
+.controlPanel {
+  display: flex;
+  padding: 0.1429rem 0.2143rem;
+  margin-right: 1.4286rem;
+  height: 2rem;
+  position: relative;
+  z-index: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 3.8571rem;
+    height: 100%;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%) translateX(25px);
+    background-color: variables.$dark;
+    border-radius: 0.4286rem;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 200ms,
+      visibility 200ms;
+  }
+
+  &:hover,
+  &:focus-within {
+    .iconDeleteButton {
+      display: flex;
+      transform: scale(1);
+      transition:
+        opacity 200ms,
+        transform 200ms;
+      opacity: 1;
+      visibility: initial;
+    }
+
+    .iconCreateButton {
+      position: relative;
+      z-index: 1;
+    }
+
+    &::before {
+      visibility: initial;
+      opacity: 1;
+    }
+  }
+}

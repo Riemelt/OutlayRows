@@ -2,15 +2,14 @@ import { FC, useMemo, useState } from 'react';
 import cn from 'classnames';
 
 import { TableRow, TableCell } from '@mui/material';
-import FeedIcon from '@mui/icons-material/Feed';
 
-import { OutLayEntity } from '../OutlayTable';
+import { OutLayEntity, outlayHeaders } from '../OutlayTable';
 import styles from './OutLayRow.module.scss';
-import trashSrc from './icons/trash.svg';
+import { ControlPanel, InputField } from '..';
 
-type Props = OutLayEntity;
-
-const MyForm: FC = () => <form />;
+type Props = OutLayEntity & {
+  isActive: boolean;
+};
 
 export const OutLayRow: FC<Props> = ({
   rowName,
@@ -20,16 +19,16 @@ export const OutLayRow: FC<Props> = ({
   equipmentCosts,
   hasChildren,
   lowerSiblingCounts,
+  isActive,
+  id,
 }) => {
   const outlayEntries = useMemo(
     () =>
       [salary, overheads, equipmentCosts, estimatedProfit].map(
-        (value, index) => ({ value, id: index }),
+        (value, index) => ({ value, ...outlayHeaders.outlay[index] }),
       ),
     [salary, overheads, equipmentCosts, estimatedProfit],
   );
-
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   const scaffolds = useMemo(() => {
     const counts = lowerSiblingCounts
@@ -62,46 +61,33 @@ export const OutLayRow: FC<Props> = ({
               <div key={scaffold.id} className={scaffold.classes} />
             ))}
           </div>
-          <div
-            className={cn(
-              styles.controlPanel,
-              {
-                [styles.controlPanel_open]: isPanelOpen,
-              },
-              {
-                [styles.controlPanel_withBottomLine]: hasChildren,
-              },
-            )}
-          >
-            <button
-              type="button"
-              className={styles.iconCreateButton}
-              title="Create"
-              onPointerOut={() => setIsPanelOpen(false)}
-              onPointerOver={() => setIsPanelOpen(true)}
-            >
-              <FeedIcon className={styles.createIcon} />
-            </button>
-            <button
-              type="button"
-              className={styles.iconDeleteButton}
-              title="Delete"
-              onPointerOut={() => setIsPanelOpen(false)}
-              onPointerOver={() => setIsPanelOpen(true)}
-            >
-              <img
-                className={styles.deleteIcon}
-                src={trashSrc}
-                alt="delete row"
-              />
-            </button>
+          <div className={styles.controlPanelWrapper}>
+            {hasChildren && <div className={styles.bottomLine} />}
+            <ControlPanel />
           </div>
+          <button type="submit" form={`${id}`} hidden aria-label="submit" />
         </div>
       </TableCell>
-      <TableCell className={styles.title}>{rowName}</TableCell>
+      <TableCell className={styles.title}>
+        <InputField
+          name="title"
+          isActive={isActive}
+          defaultValue={rowName}
+          title={outlayHeaders.title}
+          type="text"
+          form={`${id}`}
+        />
+      </TableCell>
       {outlayEntries.map((entry) => (
         <TableCell key={entry.id} className={styles.outlayEntry} align="right">
-          {entry.value.toLocaleString('ru-RU')}
+          <InputField
+            name={entry.type}
+            isActive={isActive}
+            defaultValue={entry.value}
+            title={entry.title}
+            type="number"
+            form={`${id}`}
+          />
         </TableCell>
       ))}
     </TableRow>

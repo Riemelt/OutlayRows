@@ -3,10 +3,11 @@
 
 .container {
   align-self: stretch;
-  margin: 0 10px;
+  margin: 0 0.7143rem;
+  position: relative;
 
   &::-webkit-scrollbar {
-    height: 15px;
+    height: 1.0714rem;
   }
 
   &::-webkit-scrollbar-track {
@@ -22,6 +23,10 @@
   }
 }
 
+.form {
+  @extend %hidden;
+}
+
 .outlayEntry,
 .title,
 .level {
@@ -29,11 +34,11 @@
   border-color: variables.$dark;
   text-align: left;
   white-space: nowrap;
-  padding: 10px 12px;
+  padding: 0.7143rem 0.8571rem;
 }
 
 .outlayEntry {
-  min-width: 200px;
+  min-width: 14.2857rem;
 }
 
 .title {

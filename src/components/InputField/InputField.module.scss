@@ -1,0 +1,39 @@
+@use '../../styles/mixins.scss';
+@use '../../styles/variables.scss';
+
+.blank {
+  color: white;
+}
+
+.label {
+  position: relative;
+}
+
+.title {
+  @extend %hidden;
+}
+
+.input {
+  color: rgb(113 113 122);
+  background: 0;
+  border: 0.0714rem solid variables.$dark;
+  border-radius: 0.4286rem;
+  padding: 0.7143rem;
+  transition: border-color 300ms;
+  outline: none;
+  max-width: 12.5714rem;
+  min-width: 12.5714rem;
+
+  &:hover {
+    border-color: variables.$light;
+  }
+
+  &:focus {
+    border-color: variables.$lighter;
+  }
+}
+
+.input_textType {
+  max-width: initial;
+  width: 100%;
+}

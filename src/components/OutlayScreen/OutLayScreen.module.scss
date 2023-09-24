@@ -26,6 +26,10 @@
   padding: 0.4286rem 1.0714rem;
   display: flex;
   align-items: center;
+
+  @media (width <= (variables.$md)) {
+    padding-left: 1.4286rem;
+  }
 }
 
 .line {
@@ -33,6 +37,10 @@
   width: 0.0714rem;
   height: auto;
   align-self: stretch;
+
+  @media (width <= (variables.$md)) {
+    display: none;
+  }
 }
 
 .table {

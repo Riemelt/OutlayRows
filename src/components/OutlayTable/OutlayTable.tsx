@@ -1,4 +1,4 @@
-import { FC, Fragment } from 'react';
+import { FC, FormEvent, Fragment, useCallback } from 'react';
 
 import {
   Table,
@@ -62,10 +62,27 @@ const convertTree = (tree: OutLayTree) => {
 const tree = convertTree(outlayTree);
 
 export const OutlayTable: FC = () => {
-  const ok = 5;
+  const handleSubmit = useCallback(
+    (node: OutLayEntity, event: FormEvent<HTMLFormElement>) => {
+      const formData = new FormData(event.currentTarget);
+      event.preventDefault();
+      [...formData.keys()].forEach((key) => {
+        console.log(formData.get(key));
+      });
+    },
+    [],
+  );
 
   return (
     <TableContainer className={styles.container}>
+      {tree.map((node) => (
+        <form
+          className={styles.form}
+          id={`${node.id}`}
+          key={`${node.id}`}
+          onSubmit={(event) => handleSubmit(node, event)}
+        />
+      ))}
       <Table className={styles.table}>
         <TableHead>
           <TableRow className={styles.rows}>
@@ -99,6 +116,7 @@ export const OutlayTable: FC = () => {
                 hasChildren={node.hasChildren}
                 parentId={node.parentId}
                 lowerSiblingCounts={node.lowerSiblingCounts}
+                isActive
               />
             </Fragment>
           ))}
