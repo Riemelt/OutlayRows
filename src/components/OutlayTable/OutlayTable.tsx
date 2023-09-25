@@ -1,4 +1,11 @@
-import { FC, FormEvent, Fragment, useCallback } from 'react';
+import {
+  FC,
+  FormEvent,
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react';
 
 import {
   Table,
@@ -9,61 +16,34 @@ import {
   TableRow,
 } from '@mui/material';
 
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
-  OutLayEntity,
-  OutLayNode,
-  OutLayTree,
-  outlayHeaders,
-  outlayTree,
-} from './OutlayTable.constants';
+  fetchOutlayRows,
+  selectActiveRowId,
+  selectFetchListStatus,
+  selectOutlayList,
+} from '../../store/slices/outlayRows';
+import { OutlayEntity } from '../../store/types/types';
+import { Loading, OutlayRow } from '..';
+import { outlayHeaders } from './OutlayTable.constants';
 import styles from './OutlayTable.module.scss';
-import { OutLayRow } from '..';
-
-const convertTree = (tree: OutLayTree) => {
-  const stack: Array<OutLayEntity & { child: OutLayNode[] }> = tree.map(
-    (node) => ({
-      ...node,
-      parentId: null,
-      lowerSiblingCounts: '',
-      hasChildren: node.child.length > 0,
-    }),
-  );
-
-  const result: OutLayEntity[] = [];
-
-  while (stack.length > 0) {
-    const node = stack.pop();
-    if (node === undefined) break;
-    if (node.child.length > 0) {
-      stack.push({
-        ...node,
-        child: [],
-      });
-
-      const children = node.child.map((childNode, index) => ({
-        ...childNode,
-        parentId: node.id,
-        lowerSiblingCounts: `${node.lowerSiblingCounts},${
-          node.child.length - index - 1
-        }`,
-        hasChildren: childNode.child.length > 0,
-      }));
-
-      stack.push(...children);
-    } else {
-      const { child: _, ...rest } = node;
-      result.push(rest);
-    }
-  }
-
-  return result.reverse();
-};
-
-const tree = convertTree(outlayTree);
+import { convertTree } from './OutlayTable.utils';
 
 export const OutlayTable: FC = () => {
+  const dispatch = useAppDispatch();
+  const fetchListStatus = useAppSelector(selectFetchListStatus);
+  const outlayList = useAppSelector(selectOutlayList);
+  const activeRowId = useAppSelector(selectActiveRowId);
+
+  useEffect(() => {
+    if (fetchListStatus === 'succeeded' || fetchListStatus === 'failed') return;
+    dispatch(fetchOutlayRows());
+  }, [dispatch, fetchListStatus]);
+
+  const parsedTree = useMemo(() => convertTree(outlayList), [outlayList]);
+
   const handleSubmit = useCallback(
-    (node: OutLayEntity, event: FormEvent<HTMLFormElement>) => {
+    (node: OutlayEntity, event: FormEvent<HTMLFormElement>) => {
       const formData = new FormData(event.currentTarget);
       event.preventDefault();
       [...formData.keys()].forEach((key) => {
@@ -73,9 +53,16 @@ export const OutlayTable: FC = () => {
     [],
   );
 
+  if (fetchListStatus === 'pending')
+    return (
+      <div className={styles.loading}>
+        <Loading />
+      </div>
+    );
+
   return (
     <TableContainer className={styles.container}>
-      {tree.map((node) => (
+      {parsedTree.map((node) => (
         <form
           className={styles.form}
           id={`${node.id}`}
@@ -104,9 +91,9 @@ export const OutlayTable: FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {tree.map((node) => (
+          {parsedTree.map((node) => (
             <Fragment key={node.id}>
-              <OutLayRow
+              <OutlayRow
                 id={node.id}
                 rowName={node.rowName}
                 salary={node.salary}
@@ -116,7 +103,7 @@ export const OutlayTable: FC = () => {
                 hasChildren={node.hasChildren}
                 parentId={node.parentId}
                 lowerSiblingCounts={node.lowerSiblingCounts}
-                isActive
+                isActive={node.id === activeRowId}
               />
             </Fragment>
           ))}

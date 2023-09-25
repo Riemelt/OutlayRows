@@ -1,17 +1,18 @@
-import { FC, useMemo, useState } from 'react';
-import cn from 'classnames';
+import { FC, useMemo } from 'react';
 
 import { TableRow, TableCell } from '@mui/material';
 
-import { OutLayEntity, outlayHeaders } from '../OutlayTable';
-import styles from './OutLayRow.module.scss';
+import { OutlayEntity } from '../../store/types/types';
 import { ControlPanel, InputField } from '..';
+import { outlayHeaders } from '../OutlayTable';
+import styles from './OutlayRow.module.scss';
+import { createOutlayEntries, createScaffolds } from './OutlayRow.utils';
 
-type Props = OutLayEntity & {
+type Props = OutlayEntity & {
   isActive: boolean;
 };
 
-export const OutLayRow: FC<Props> = ({
+export const OutlayRow: FC<Props> = ({
   rowName,
   salary,
   overheads,
@@ -24,33 +25,14 @@ export const OutLayRow: FC<Props> = ({
 }) => {
   const outlayEntries = useMemo(
     () =>
-      [salary, overheads, equipmentCosts, estimatedProfit].map(
-        (value, index) => ({ value, ...outlayHeaders.outlay[index] }),
-      ),
+      createOutlayEntries([salary, overheads, equipmentCosts, estimatedProfit]),
     [salary, overheads, equipmentCosts, estimatedProfit],
   );
 
-  const scaffolds = useMemo(() => {
-    const counts = lowerSiblingCounts
-      .split(',')
-      .filter((count) => count !== '')
-      .map(Number);
-
-    return counts.map((count, index) => ({
-      id: index,
-      classes: cn(
-        styles.line,
-        {
-          [styles.line_horizontalRight]: index === counts.length - 1,
-        },
-        {
-          [styles.line_fullVertical]: count > 0,
-          [styles.line_topHalfVertical]:
-            count <= 0 && index === counts.length - 1,
-        },
-      ),
-    }));
-  }, [lowerSiblingCounts]);
+  const scaffolds = useMemo(
+    () => createScaffolds(lowerSiblingCounts),
+    [lowerSiblingCounts],
+  );
 
   return (
     <TableRow className={styles.row}>
@@ -76,6 +58,7 @@ export const OutLayRow: FC<Props> = ({
           title={outlayHeaders.title}
           type="text"
           form={`${id}`}
+          required
         />
       </TableCell>
       {outlayEntries.map((entry) => (
@@ -87,6 +70,8 @@ export const OutLayRow: FC<Props> = ({
             title={entry.title}
             type="number"
             form={`${id}`}
+            step="any"
+            required
           />
         </TableCell>
       ))}

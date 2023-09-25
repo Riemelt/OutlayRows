@@ -1,1 +1,1 @@
-export * from './OutLayScreen';
+export * from './OutlayScreen';

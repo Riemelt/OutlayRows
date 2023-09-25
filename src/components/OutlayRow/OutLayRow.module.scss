@@ -73,7 +73,7 @@
 
 .line_horizontalRight {
   &::after {
-    width: 0.8786rem;
+    width: 0.8357rem;
     height: 0.0714rem;
     top: 50%;
     transform: translate(0.5071rem, 0);
@@ -89,7 +89,7 @@
   z-index: 1;
   background-color: variables.$lighter;
   width: 0.0714rem;
-  height: 1.7857rem;
+  height: 1.5714rem;
   bottom: 0;
-  transform: translate(1.0571rem, 75%);
+  transform: translate(1.0571rem, 73%);
 }

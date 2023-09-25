@@ -2,8 +2,13 @@ import HtmlWebpackPlugin = require('html-webpack-plugin');
 import MiniCssExtractPlugin = require('mini-css-extract-plugin');
 import path = require('path');
 import autoprefixer = require('autoprefixer');
-import { Configuration } from 'webpack';
+import { Configuration, EnvironmentPlugin } from 'webpack';
 import 'webpack-dev-server';
+import dotenv = require('dotenv');
+
+const dotenvConfig = dotenv.config({
+  path: path.join(__dirname, '.env.local'),
+});
 
 const srcPath = path.resolve(__dirname, './src');
 const output = path.resolve(__dirname, './dist');
@@ -34,6 +39,7 @@ const config: Configuration = {
       filename: './index.html',
       chunks: ['app'],
     }),
+    new EnvironmentPlugin(Object.keys(dotenvConfig.parsed || {})),
   ],
   entry: entryPoint,
   output: {

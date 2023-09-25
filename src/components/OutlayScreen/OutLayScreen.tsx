@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 import { OutlayTable } from '..';
-import { title } from './OutLayScreen.constants';
-import styles from './OutLayScreen.module.scss';
+import { title } from './OutlayScreen.constants';
+import styles from './OutlayScreen.module.scss';
 
 export const OutlayScreen: FC = () => (
   <div className={styles.screen}>

@@ -6,3 +6,4 @@ export * from './OutlayScreen';
 export * from './OutlayRow';
 export * from './InputField';
 export * from './ControlPanel';
+export * from './Loading';

@@ -1,1 +1,1 @@
-export * from './OutLayRow';
+export * from './OutlayRow';
