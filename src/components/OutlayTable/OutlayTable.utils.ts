@@ -40,3 +40,21 @@ export function convertTree(tree: OutlayTree) {
 
   return result.reverse();
 }
+
+export function buildDataFromForm(data: FormData) {
+  const rowName = data.get('rowName');
+  const salary = data.get('salary');
+  const overheads = data.get('overheads');
+  const equipmentCosts = data.get('equipmentCosts');
+  const estimatedProfit = data.get('estimatedProfit');
+
+  return {
+    rowName: typeof rowName === 'string' ? rowName : 'No name',
+    salary: typeof salary === 'string' ? Number(salary) : 0,
+    overheads: typeof overheads === 'string' ? Number(overheads) : 0,
+    equipmentCosts:
+      typeof equipmentCosts === 'string' ? Number(equipmentCosts) : 0,
+    estimatedProfit:
+      typeof estimatedProfit === 'string' ? Number(estimatedProfit) : 0,
+  };
+}

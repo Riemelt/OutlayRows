@@ -6,7 +6,7 @@ import {
 import { endpointBase } from './constants';
 import { createRequestBody } from './utils';
 
-export async function getOutlayRows(): Promise<OutlayTree> {
+export async function requestGetOutlayRows(): Promise<OutlayTree> {
   const query = `${endpointBase}/list`;
   const response = await fetch(query);
 
@@ -16,11 +16,15 @@ export async function getOutlayRows(): Promise<OutlayTree> {
   return outlayList;
 }
 
-export async function createOutlayRow(entity: OutlayEntity) {
+export async function requestCreateOutlayRow(entity: OutlayEntity) {
   const query = `${endpointBase}/create`;
   const requestBody = createRequestBody(entity);
+
   const response = await fetch(query, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify({
       ...requestBody,
       parentId: entity.parentId,
@@ -32,5 +36,5 @@ export async function createOutlayRow(entity: OutlayEntity) {
   const outlayUpdate: OutlayUpdate = await response.json();
   return outlayUpdate;
 }
-export function updateOutlayRow() {}
-export function deleteOutlayRow() {}
+export function requestUpdateOutlayRow() {}
+export function requestDeleteOutlayRow() {}

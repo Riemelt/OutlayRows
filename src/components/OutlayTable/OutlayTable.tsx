@@ -18,16 +18,20 @@ import {
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
+  createBlankRow,
+  deleteRow,
+  fetchCreateOutlayRow,
   fetchOutlayRows,
   selectActiveRowId,
   selectFetchListStatus,
   selectOutlayList,
+  setActiveRowId,
 } from '../../store/slices/outlayRows';
-import { OutlayEntity } from '../../store/types/types';
+import { OutlayEntity, OutlayId } from '../../store/types/types';
 import { Loading, OutlayRow } from '..';
 import { outlayHeaders } from './OutlayTable.constants';
 import styles from './OutlayTable.module.scss';
-import { convertTree } from './OutlayTable.utils';
+import { buildDataFromForm, convertTree } from './OutlayTable.utils';
 
 export const OutlayTable: FC = () => {
   const dispatch = useAppDispatch();
@@ -44,13 +48,37 @@ export const OutlayTable: FC = () => {
 
   const handleSubmit = useCallback(
     (node: OutlayEntity, event: FormEvent<HTMLFormElement>) => {
-      const formData = new FormData(event.currentTarget);
       event.preventDefault();
-      [...formData.keys()].forEach((key) => {
-        console.log(formData.get(key));
-      });
+      const formData = new FormData(event.currentTarget);
+
+      dispatch(
+        fetchCreateOutlayRow({
+          ...node,
+          ...buildDataFromForm(formData),
+        }),
+      );
+      dispatch(setActiveRowId(null));
     },
-    [],
+    [dispatch],
+  );
+
+  const handleCreateButtonClick = useCallback(
+    (parentId: OutlayId) => {
+      if (parentId === 'creating') return;
+      dispatch(createBlankRow(parentId));
+      dispatch(setActiveRowId('creating'));
+    },
+    [dispatch],
+  );
+
+  const handleDeleteButtonClick = useCallback(
+    (id: OutlayId) => {
+      if (id === 'creating') {
+        dispatch(deleteRow(id));
+        dispatch(setActiveRowId(null));
+      }
+    },
+    [dispatch],
   );
 
   if (fetchListStatus === 'pending')
@@ -104,6 +132,8 @@ export const OutlayTable: FC = () => {
                 parentId={node.parentId}
                 lowerSiblingCounts={node.lowerSiblingCounts}
                 isActive={node.id === activeRowId}
+                onCreateButtonClick={handleCreateButtonClick}
+                onDeleteButtonClick={handleDeleteButtonClick}
               />
             </Fragment>
           ))}

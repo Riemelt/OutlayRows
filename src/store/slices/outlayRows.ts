@@ -2,25 +2,28 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import {
-  createOutlayRow,
-  getOutlayRows,
+  requestCreateOutlayRow,
+  requestGetOutlayRows,
 } from '../../api/outlayRows/outlayRows';
 import { OutlayEntity, OutlayId, OutlayTree, StatusType } from '../types/types';
 import { RootState } from '../store';
-import { updateOutlayTree } from '../utils/utils';
+import {
+  createOutlayBlankRow,
+  deleteOutlayNode,
+  updateOutlayTree,
+} from '../utils/utils';
 
 type OutlayRowsState = {
   fetchListStatus: StatusType;
   outlayList: OutlayTree;
   activeRowId: OutlayId | null;
-  isOnCreating: boolean;
   fetchCreateRowStatus: StatusType;
 };
 
 export const fetchOutlayRows = createAsyncThunk(
   'outlayRows/fetchList',
   async () => {
-    const outlayList = await getOutlayRows();
+    const outlayList = await requestGetOutlayRows();
     return outlayList;
   },
 );
@@ -28,7 +31,7 @@ export const fetchOutlayRows = createAsyncThunk(
 export const fetchCreateOutlayRow = createAsyncThunk(
   'outlayRows/fetchCreateRow',
   async (entity: OutlayEntity) => {
-    const outlayUpdate = await createOutlayRow(entity);
+    const outlayUpdate = await requestCreateOutlayRow(entity);
     return { outlayUpdate, nodeId: entity.id };
   },
 );
@@ -37,7 +40,6 @@ const initialState: OutlayRowsState = {
   fetchListStatus: 'idle',
   outlayList: [],
   activeRowId: null,
-  isOnCreating: false,
   fetchCreateRowStatus: 'idle',
 };
 
@@ -45,8 +47,14 @@ const outlayRowsSlice = createSlice({
   initialState,
   name: 'outlayRows',
   reducers: {
-    setIsOnCreating: (state, action: PayloadAction<boolean>) => {
-      state.isOnCreating = action.payload;
+    setActiveRowId: (state, action: PayloadAction<OutlayId | null>) => {
+      state.activeRowId = action.payload;
+    },
+    createBlankRow: (state, action: PayloadAction<number | null>) => {
+      createOutlayBlankRow(state.outlayList, action.payload);
+    },
+    deleteRow: (state, action: PayloadAction<OutlayId>) => {
+      state.outlayList = deleteOutlayNode(state.outlayList, action.payload);
     },
   },
   extraReducers: (bundler) => {
@@ -76,15 +84,16 @@ const outlayRowsSlice = createSlice({
         state.fetchCreateRowStatus = 'succeeded';
       })
       .addCase(fetchCreateOutlayRow.pending, (state) => {
-        state.fetchListStatus = 'pending';
+        state.fetchCreateRowStatus = 'pending';
       })
       .addCase(fetchCreateOutlayRow.rejected, (state) => {
-        state.fetchListStatus = 'failed';
+        state.fetchCreateRowStatus = 'failed';
       });
   },
 });
 
-export const { setIsOnCreating } = outlayRowsSlice.actions;
+export const { setActiveRowId, createBlankRow, deleteRow } =
+  outlayRowsSlice.actions;
 
 export const selectFetchListStatus = (state: RootState) =>
   state.outlayRows.fetchListStatus;
@@ -94,8 +103,5 @@ export const selectOutlayList = (state: RootState) =>
 
 export const selectActiveRowId = (state: RootState) =>
   state.outlayRows.activeRowId;
-
-export const selectIsOnCreating = (state: RootState) =>
-  state.outlayRows.isOnCreating;
 
 export default outlayRowsSlice.reducer;

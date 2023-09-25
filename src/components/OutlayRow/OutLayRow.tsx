@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 
 import { TableRow, TableCell } from '@mui/material';
 
-import { OutlayEntity } from '../../store/types/types';
+import { OutlayEntity, OutlayId } from '../../store/types/types';
 import { ControlPanel, InputField } from '..';
 import { outlayHeaders } from '../OutlayTable';
 import styles from './OutlayRow.module.scss';
@@ -10,6 +10,8 @@ import { createOutlayEntries, createScaffolds } from './OutlayRow.utils';
 
 type Props = OutlayEntity & {
   isActive: boolean;
+  onCreateButtonClick: (id: OutlayId) => void;
+  onDeleteButtonClick: (id: OutlayId) => void;
 };
 
 export const OutlayRow: FC<Props> = ({
@@ -22,6 +24,8 @@ export const OutlayRow: FC<Props> = ({
   lowerSiblingCounts,
   isActive,
   id,
+  onCreateButtonClick,
+  onDeleteButtonClick,
 }) => {
   const outlayEntries = useMemo(
     () =>
@@ -45,14 +49,17 @@ export const OutlayRow: FC<Props> = ({
           </div>
           <div className={styles.controlPanelWrapper}>
             {hasChildren && <div className={styles.bottomLine} />}
-            <ControlPanel />
+            <ControlPanel
+              onCreateButtonClick={() => onCreateButtonClick(id)}
+              onDeleteButtonClick={() => onDeleteButtonClick(id)}
+            />
           </div>
           <button type="submit" form={`${id}`} hidden aria-label="submit" />
         </div>
       </TableCell>
       <TableCell className={styles.title}>
         <InputField
-          name="title"
+          name="rowName"
           isActive={isActive}
           defaultValue={rowName}
           title={outlayHeaders.title}
