@@ -19,15 +19,20 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
   createBlankRow,
-  deleteRow,
+  deleteBlankRow,
   fetchCreateOutlayRow,
+  fetchDeleteOutlayRow,
   fetchOutlayRows,
+  fetchUpdateOutlayRow,
   selectActiveRowId,
   selectFetchListStatus,
   selectOutlayList,
-  setActiveRowId,
-} from '../../store/slices/outlayRows';
-import { OutlayEntity, OutlayId } from '../../store/types/types';
+  setRowInUpdatingMode,
+} from '../../store/slices/outlayRowsSlice/outlayRowsSlice';
+import {
+  OutlayEntity,
+  OutlayId,
+} from '../../store/slices/outlayRowsSlice/types';
 import { Loading, OutlayRow } from '..';
 import { outlayHeaders } from './OutlayTable.constants';
 import styles from './OutlayTable.module.scss';
@@ -44,20 +49,25 @@ export const OutlayTable: FC = () => {
     dispatch(fetchOutlayRows());
   }, [dispatch, fetchListStatus]);
 
+  useEffect(() => {
+    if (outlayList.length !== 0) return;
+    dispatch(createBlankRow(null));
+  }, [dispatch, outlayList]);
+
   const parsedTree = useMemo(() => convertTree(outlayList), [outlayList]);
 
   const handleSubmit = useCallback(
     (node: OutlayEntity, event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const formData = new FormData(event.currentTarget);
+      const updatedNode = {
+        ...node,
+        ...buildDataFromForm(formData),
+      };
 
-      dispatch(
-        fetchCreateOutlayRow({
-          ...node,
-          ...buildDataFromForm(formData),
-        }),
-      );
-      dispatch(setActiveRowId(null));
+      const dispatchReducer =
+        node.id === 'creating' ? fetchCreateOutlayRow : fetchUpdateOutlayRow;
+      dispatch(dispatchReducer(updatedNode));
     },
     [dispatch],
   );
@@ -66,7 +76,6 @@ export const OutlayTable: FC = () => {
     (parentId: OutlayId) => {
       if (parentId === 'creating') return;
       dispatch(createBlankRow(parentId));
-      dispatch(setActiveRowId('creating'));
     },
     [dispatch],
   );
@@ -74,9 +83,18 @@ export const OutlayTable: FC = () => {
   const handleDeleteButtonClick = useCallback(
     (id: OutlayId) => {
       if (id === 'creating') {
-        dispatch(deleteRow(id));
-        dispatch(setActiveRowId(null));
+        dispatch(deleteBlankRow());
+        return;
       }
+
+      dispatch(fetchDeleteOutlayRow(id));
+    },
+    [dispatch],
+  );
+
+  const handleRowDoubleClick = useCallback(
+    (id: OutlayId) => {
+      dispatch(setRowInUpdatingMode(id));
     },
     [dispatch],
   );
@@ -134,6 +152,7 @@ export const OutlayTable: FC = () => {
                 isActive={node.id === activeRowId}
                 onCreateButtonClick={handleCreateButtonClick}
                 onDeleteButtonClick={handleDeleteButtonClick}
+                onDoubleClick={handleRowDoubleClick}
               />
             </Fragment>
           ))}

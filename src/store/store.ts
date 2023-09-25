@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import outlayRowsReducer from './slices/outlayRows';
+import outlayRowsReducer from './slices/outlayRowsSlice/outlayRowsSlice';
 
 export const store = configureStore({
   reducer: {

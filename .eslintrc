@@ -71,5 +71,11 @@
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*Slice.ts"],
+      "rules": { "no-param-reassign": ["error", { "props": false }] }
+    }
+  ]
 }

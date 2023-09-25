@@ -1,20 +1,9 @@
 import {
   OutlayEntity,
-  OutlayTree,
   OutlayUpdate,
-} from '../../store/types/types';
-import { endpointBase } from './constants';
-import { createRequestBody } from './utils';
-
-export async function requestGetOutlayRows(): Promise<OutlayTree> {
-  const query = `${endpointBase}/list`;
-  const response = await fetch(query);
-
-  if (!response.ok) throw new Error(`Couldn't fetch outlay list`);
-
-  const outlayList: OutlayTree = await response.json();
-  return outlayList;
-}
+} from '../../../store/slices/outlayRowsSlice/types';
+import { endpointBase } from '../constants';
+import { createRequestBody } from '../utils';
 
 export async function requestCreateOutlayRow(entity: OutlayEntity) {
   const query = `${endpointBase}/create`;
@@ -36,5 +25,3 @@ export async function requestCreateOutlayRow(entity: OutlayEntity) {
   const outlayUpdate: OutlayUpdate = await response.json();
   return outlayUpdate;
 }
-export function requestUpdateOutlayRow() {}
-export function requestDeleteOutlayRow() {}

@@ -1,5 +1,3 @@
-import { OutlayTree } from '../../store/types/types';
-
 export const outlayHeaders = {
   level: 'Уровень',
   title: 'Наименование работ',

@@ -1,4 +1,4 @@
-import { OutlayEntity } from '../../store/types/types';
+import { OutlayEntity } from '../../store/slices/outlayRowsSlice/types';
 
 export function createRequestBody(node: OutlayEntity) {
   return {

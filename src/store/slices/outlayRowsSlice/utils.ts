@@ -4,7 +4,7 @@ import {
   OutlayNode,
   OutlayTree,
   OutlayUpdate,
-} from '../types/types';
+} from './types';
 
 function searchNode(tree: OutlayTree, id: OutlayId): OutlayNode | null {
   const stack = [...tree];
@@ -23,8 +23,7 @@ function searchNode(tree: OutlayTree, id: OutlayId): OutlayNode | null {
 
 export function deleteOutlayNode(tree: OutlayTree, id: OutlayId): OutlayTree {
   const firstLayerIndex = tree.findIndex((node) => node.id === id);
-  if (firstLayerIndex > 0)
-    return tree.filter((child) => child.id !== firstLayerIndex);
+  if (firstLayerIndex >= 0) return tree.filter((_, i) => i !== firstLayerIndex);
 
   const stack = [...tree];
 
@@ -103,4 +102,23 @@ export function createOutlayBlankRow(
   if (node === null) return;
 
   node.child.push(blank);
+}
+
+export function hasNode(
+  tree: OutlayTree,
+  parentId: OutlayId,
+  id: OutlayId,
+): boolean {
+  const parentNode = searchNode(tree, parentId);
+  if (parentNode === null) return false;
+  const childNode = searchNode(parentNode.child, id);
+  return childNode !== null;
+}
+
+export function hasOrIsNode(
+  tree: OutlayTree,
+  parentId: OutlayId,
+  id: OutlayId,
+): boolean {
+  return parentId === id || hasNode(tree, parentId, id);
 }

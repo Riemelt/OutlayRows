@@ -30,6 +30,14 @@
   color: variables.$primary;
 }
 
+.iconCreateButton:disabled {
+  cursor: not-allowed;
+
+  .createIcon {
+    color: variables.$light;
+  }
+}
+
 .controlPanel {
   display: flex;
   padding: 0.1429rem 0.2143rem;

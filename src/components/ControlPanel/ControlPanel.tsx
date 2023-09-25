@@ -8,11 +8,13 @@ import styles from './ControlPanel.module.scss';
 type Props = {
   onCreateButtonClick?: Function;
   onDeleteButtonClick?: Function;
+  isCreateButtonDisabled?: boolean;
 };
 
 export const ControlPanel: FC<Props> = ({
   onCreateButtonClick,
   onDeleteButtonClick,
+  isCreateButtonDisabled = false,
 }) => (
   <div className={styles.controlPanel}>
     <button
@@ -20,6 +22,7 @@ export const ControlPanel: FC<Props> = ({
       className={styles.iconCreateButton}
       title="Create"
       onClick={() => onCreateButtonClick?.()}
+      disabled={isCreateButtonDisabled}
     >
       <FeedIcon className={styles.createIcon} />
     </button>

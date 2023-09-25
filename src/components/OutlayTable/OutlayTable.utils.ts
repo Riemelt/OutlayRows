@@ -1,4 +1,8 @@
-import { OutlayTree, OutlayEntity, OutlayNode } from '../../store/types/types';
+import {
+  OutlayTree,
+  OutlayEntity,
+  OutlayNode,
+} from '../../store/slices/outlayRowsSlice/types';
 
 export function convertTree(tree: OutlayTree) {
   const stack: Array<OutlayEntity & { child: OutlayNode[] }> = tree.map(

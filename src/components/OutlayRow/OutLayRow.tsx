@@ -2,7 +2,10 @@ import { FC, useMemo } from 'react';
 
 import { TableRow, TableCell } from '@mui/material';
 
-import { OutlayEntity, OutlayId } from '../../store/types/types';
+import {
+  OutlayEntity,
+  OutlayId,
+} from '../../store/slices/outlayRowsSlice/types';
 import { ControlPanel, InputField } from '..';
 import { outlayHeaders } from '../OutlayTable';
 import styles from './OutlayRow.module.scss';
@@ -12,6 +15,7 @@ type Props = OutlayEntity & {
   isActive: boolean;
   onCreateButtonClick: (id: OutlayId) => void;
   onDeleteButtonClick: (id: OutlayId) => void;
+  onDoubleClick: (id: OutlayId) => void;
 };
 
 export const OutlayRow: FC<Props> = ({
@@ -26,6 +30,7 @@ export const OutlayRow: FC<Props> = ({
   id,
   onCreateButtonClick,
   onDeleteButtonClick,
+  onDoubleClick,
 }) => {
   const outlayEntries = useMemo(
     () =>
@@ -39,7 +44,7 @@ export const OutlayRow: FC<Props> = ({
   );
 
   return (
-    <TableRow className={styles.row}>
+    <TableRow className={styles.row} onDoubleClick={() => onDoubleClick(id)}>
       <TableCell className={styles.level}>
         <div className={styles.levelWrapper}>
           <div className={styles.scaffolds}>
@@ -52,6 +57,7 @@ export const OutlayRow: FC<Props> = ({
             <ControlPanel
               onCreateButtonClick={() => onCreateButtonClick(id)}
               onDeleteButtonClick={() => onDeleteButtonClick(id)}
+              isCreateButtonDisabled={id === 'creating'}
             />
           </div>
           <button type="submit" form={`${id}`} hidden aria-label="submit" />
