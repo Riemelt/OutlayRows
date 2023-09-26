@@ -15,6 +15,7 @@ To make demo work, please go to the site settings and allow insecure content, ot
 - react
 - react-redux
 - scss
+- css modules
 - material ui
 - webpack
 
