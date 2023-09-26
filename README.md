@@ -1,2 +1,1 @@
-# SevenWindsChallenge
-SevenWinds frontend challenge
+# OutlayRows

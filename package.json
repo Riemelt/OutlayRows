@@ -1,7 +1,7 @@
 {
-  "name": "seven-winds-challenge",
+  "name": "outlay-rows",
   "version": "1.0.0",
-  "description": "SevenWinds frontend challenge",
+  "description": "Outlay rows, frontend challenge",
   "main": "index.tsx",
   "scripts": {
     "start": "set NODE_ENV=development&&webpack serve --open",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Riemelt/SevenWindsChallenge.git"
+    "url": "git+https://github.com/Riemelt/OutlayRows.git"
   },
   "keywords": [
     "react",
@@ -21,9 +21,9 @@
   "author": "Riemelt <n.lychenkov@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Riemelt/SevenWindsChallenge/issues"
+    "url": "https://github.com/Riemelt/OutlayRows/issues"
   },
-  "homepage": "https://github.com/Riemelt/SevenWindsChallenge#readme",
+  "homepage": "https://github.com/Riemelt/OutlayRows#readme",
   "dependencies": {
     "@babel/preset-env": "^7.22.20",
     "@babel/preset-react": "^7.22.15",
