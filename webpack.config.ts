@@ -38,6 +38,7 @@ const config: Configuration = {
       template: './index.html',
       filename: './index.html',
       chunks: ['app'],
+      favicon: 'assets/favicons/favicon.ico',
     }),
     new EnvironmentPlugin(Object.keys(dotenvConfig.parsed || {})),
   ],
@@ -56,15 +57,11 @@ const config: Configuration = {
     rules: [
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        exclude: /fonts/,
+        exclude: /fonts|favicons/,
         type: 'asset/resource',
         generator: {
           filename: 'assets/images/[name][hash][ext][query]',
         },
-      },
-      {
-        test: /\.html$/i,
-        loader: 'html-loader',
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf|svg)$/i,
@@ -73,6 +70,10 @@ const config: Configuration = {
         generator: {
           filename: 'assets/fonts/[name][hash][ext][query]',
         },
+      },
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
       },
       {
         test: /\.(js|jsx|ts|tsx)$/,
