@@ -40,7 +40,10 @@ const config: Configuration = {
       chunks: ['app'],
       favicon: 'assets/favicons/favicon.ico',
     }),
-    new EnvironmentPlugin(Object.keys(dotenvConfig.parsed || {})),
+    new EnvironmentPlugin({
+      API_URL: dotenvConfig.parsed?.API_URL,
+      API_ENTITY_ID: dotenvConfig.parsed?.API_ENTITY_ID,
+    }),
   ],
   entry: entryPoint,
   output: {
