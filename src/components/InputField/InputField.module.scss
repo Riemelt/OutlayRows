@@ -1,9 +1,18 @@
 @use '../../styles/mixins.scss';
 @use '../../styles/variables.scss';
 
+.blank,
+.input {
+  max-width: 52.3571rem;
+}
+
 .blank {
   color: white;
   min-width: 12.5714rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: fit-content;
 }
 
 .label {
@@ -35,6 +44,6 @@
 }
 
 .input_textType {
-  max-width: initial;
+  max-width: 52.3571rem;
   width: 100%;
 }

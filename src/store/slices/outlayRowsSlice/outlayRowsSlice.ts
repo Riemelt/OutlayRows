@@ -1,9 +1,4 @@
-import {
-  PayloadAction,
-  createAsyncThunk,
-  createSlice,
-  current,
-} from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import {
   requestCreateOutlayRow,
@@ -112,7 +107,8 @@ const outlayRowsSlice = createSlice({
       .addCase(fetchOutlayRows.pending, (state) => {
         state.fetchListStatus = 'pending';
       })
-      .addCase(fetchOutlayRows.rejected, (state) => {
+      .addCase(fetchOutlayRows.rejected, (state, action) => {
+        console.error(action.error.message);
         state.fetchListStatus = 'failed';
       })
       .addCase(fetchCreateOutlayRow.fulfilled, (state, action) => {
@@ -130,7 +126,8 @@ const outlayRowsSlice = createSlice({
       .addCase(fetchCreateOutlayRow.pending, (state) => {
         state.fetchCreateRowStatus = 'pending';
       })
-      .addCase(fetchCreateOutlayRow.rejected, (state) => {
+      .addCase(fetchCreateOutlayRow.rejected, (state, action) => {
+        console.error(action.error.message);
         state.fetchCreateRowStatus = 'failed';
       })
       .addCase(fetchDeleteOutlayRow.fulfilled, (state, action) => {
@@ -154,7 +151,8 @@ const outlayRowsSlice = createSlice({
       .addCase(fetchDeleteOutlayRow.pending, (state) => {
         state.fetchDeleteRowStatus = 'pending';
       })
-      .addCase(fetchDeleteOutlayRow.rejected, (state) => {
+      .addCase(fetchDeleteOutlayRow.rejected, (state, action) => {
+        console.error(action.error.message);
         state.fetchDeleteRowStatus = 'failed';
       })
       .addCase(fetchUpdateOutlayRow.fulfilled, (state, action) => {
@@ -172,7 +170,8 @@ const outlayRowsSlice = createSlice({
       .addCase(fetchUpdateOutlayRow.pending, (state) => {
         state.fetchUpdateRowStatus = 'pending';
       })
-      .addCase(fetchUpdateOutlayRow.rejected, (state) => {
+      .addCase(fetchUpdateOutlayRow.rejected, (state, action) => {
+        console.error(action.error.message);
         state.fetchUpdateRowStatus = 'failed';
       });
   },

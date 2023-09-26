@@ -3,7 +3,7 @@
 
 .container {
   align-self: stretch;
-  margin: 0 0.7143rem;
+  margin: 0 0.6429rem;
   position: relative;
 
   &::-webkit-scrollbar {
@@ -37,14 +37,10 @@
   padding: 0.7143rem 0.8571rem;
 }
 
-.outlayEntry {
-  min-width: 14.2857rem;
-}
-
 .title {
   width: 100%;
 }
 
 .loading {
-  margin: 20px auto;
+  margin: 1.4286rem auto;
 }

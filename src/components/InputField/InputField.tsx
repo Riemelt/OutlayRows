@@ -15,7 +15,10 @@ export const InputField: FC<Props> = ({ isActive, title, ...rest }) => {
 
   if (!isActive)
     return (
-      <div className={styles.blank}>
+      <div
+        className={styles.blank}
+        title={rest.defaultValue?.toLocaleString('ru-RU')}
+      >
         {rest.defaultValue?.toLocaleString('ru-RU')}
       </div>
     );
