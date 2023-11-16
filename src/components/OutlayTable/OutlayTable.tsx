@@ -108,14 +108,16 @@ export const OutlayTable: FC = () => {
 
   return (
     <TableContainer className={styles.container}>
-      {parsedTree.map((node) => (
-        <form
-          className={styles.form}
-          id={`${node.id}`}
-          key={`${node.id}`}
-          onSubmit={(event) => handleSubmit(node, event)}
-        />
-      ))}
+      {parsedTree
+        .filter((node) => node.id === activeRowId)
+        .map((node) => (
+          <form
+            className={styles.form}
+            id={`${node.id}`}
+            key={`${node.id}`}
+            onSubmit={(event) => handleSubmit(node, event)}
+          />
+        ))}
       <Table className={styles.table}>
         <TableHead>
           <TableRow className={styles.rows}>

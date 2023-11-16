@@ -4,6 +4,14 @@
 
 To make demo work, please go to the site settings and allow insecure content, otherwise outlay rows API will be unavailable
 
+Firefox:
+
+![image](/src/guides/firefox-guide.png)
+
+Chrome:
+
+![image](/src/guides/chrome-guide.png)
+
 ## Compatible with
 
 - node v18.17.1
